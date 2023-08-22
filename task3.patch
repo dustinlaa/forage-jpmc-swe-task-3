@@ -1,0 +1,244 @@
+From 867a0d45c42b4a1bc497b11ddfdc2f055513bf21 Mon Sep 17 00:00:00 2001
+From: dustinlaa <drl3@njit.edu>
+Date: Tue, 22 Aug 2023 12:28:51 -0400
+Subject: [PATCH] modified Graph.tsx and DataManipulator.tsx to show a ratio
+ graph based on price_abc and price_def and alert if above or below a
+ threshold
+
+---
+ package-lock.json      | 32 +++++++++++++++++-------------
+ package.json           |  2 +-
+ src/DataManipulator.ts | 44 ++++++++++++++++++++++++++++++------------
+ src/Graph.tsx          | 35 +++++++++++++++++++--------------
+ 4 files changed, 72 insertions(+), 41 deletions(-)
+
+diff --git a/package-lock.json b/package-lock.json
+index 8135a72..86c4b5a 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -13,7 +13,6 @@
+         "@finos/perspective-viewer-d3fc": "^1.6.2",
+         "@finos/perspective-viewer-datagrid": "^1.6.2",
+         "@types/jest": "^23.3.13",
+-        "@types/node": "^10.12.19",
+         "@types/react": "^16.9.0",
+         "@types/react-dom": "^16.0.11",
+         "bootstrap": "^4.2.1",
+@@ -23,6 +22,7 @@
+         "react-scripts": "2.1.3"
+       },
+       "devDependencies": {
++        "@types/node": "^20.5.2",
+         "awesome-typescript-loader": "^5.2.1",
+         "source-map-loader": "^0.2.4",
+         "typescript": "^3.2.4"
+@@ -2294,9 +2294,10 @@
+       "integrity": "sha512-Q5hTcfdudEL2yOmluA1zaSyPbzWPmJ3XfSWeP3RyoYvS9hnje1ZyagrZOuQ6+1nQC1Gw+7gap3pLNL3xL6UBug=="
+     },
+     "node_modules/@types/node": {
+-      "version": "10.17.60",
+-      "resolved": "https://registry.npmjs.org/@types/node/-/node-10.17.60.tgz",
+-      "integrity": "sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw=="
++      "version": "20.5.2",
++      "resolved": "https://registry.npmjs.org/@types/node/-/node-20.5.2.tgz",
++      "integrity": "sha512-5j/lXt7unfPOUlrKC34HIaedONleyLtwkKggiD/0uuMfT8gg2EOpg0dz4lCD15Ga7muC+1WzJZAjIB9simWd6Q==",
++      "dev": true
+     },
+     "node_modules/@types/prop-types": {
+       "version": "15.7.5",
+@@ -4408,9 +4409,9 @@
+       }
+     },
+     "node_modules/caniuse-lite": {
+-      "version": "1.0.30001373",
+-      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001373.tgz",
+-      "integrity": "sha512-pJYArGHrPp3TUqQzFYRmP/lwJlj8RCbVe3Gd3eJQkAV8SAC6b19XS9BjMvRdvaS8RMkaTN8ZhoHP6S1y8zzwEQ==",
++      "version": "1.0.30001522",
++      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001522.tgz",
++      "integrity": "sha512-TKiyTVZxJGhsTszLuzb+6vUZSjVOAhClszBr2Ta2k9IwtNBT/4dzmL6aywt0HCgEZlmwJzXJd8yNiob6HgwTRg==",
+       "funding": [
+         {
+           "type": "opencollective",
+@@ -4419,6 +4420,10 @@
+         {
+           "type": "tidelift",
+           "url": "https://tidelift.com/funding/github/npm/caniuse-lite"
++        },
++        {
++          "type": "github",
++          "url": "https://github.com/sponsors/ai"
+         }
+       ]
+     },
+@@ -21963,9 +21968,10 @@
+       "integrity": "sha512-Q5hTcfdudEL2yOmluA1zaSyPbzWPmJ3XfSWeP3RyoYvS9hnje1ZyagrZOuQ6+1nQC1Gw+7gap3pLNL3xL6UBug=="
+     },
+     "@types/node": {
+-      "version": "10.17.60",
+-      "resolved": "https://registry.npmjs.org/@types/node/-/node-10.17.60.tgz",
+-      "integrity": "sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw=="
++      "version": "20.5.2",
++      "resolved": "https://registry.npmjs.org/@types/node/-/node-20.5.2.tgz",
++      "integrity": "sha512-5j/lXt7unfPOUlrKC34HIaedONleyLtwkKggiD/0uuMfT8gg2EOpg0dz4lCD15Ga7muC+1WzJZAjIB9simWd6Q==",
++      "dev": true
+     },
+     "@types/prop-types": {
+       "version": "15.7.5",
+@@ -23720,9 +23726,9 @@
+       }
+     },
+     "caniuse-lite": {
+-      "version": "1.0.30001373",
+-      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001373.tgz",
+-      "integrity": "sha512-pJYArGHrPp3TUqQzFYRmP/lwJlj8RCbVe3Gd3eJQkAV8SAC6b19XS9BjMvRdvaS8RMkaTN8ZhoHP6S1y8zzwEQ=="
++      "version": "1.0.30001522",
++      "resolved": "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001522.tgz",
++      "integrity": "sha512-TKiyTVZxJGhsTszLuzb+6vUZSjVOAhClszBr2Ta2k9IwtNBT/4dzmL6aywt0HCgEZlmwJzXJd8yNiob6HgwTRg=="
+     },
+     "capture-exit": {
+       "version": "1.2.0",
+diff --git a/package.json b/package.json
+index 8ca3a60..425169c 100644
+--- a/package.json
++++ b/package.json
+@@ -8,7 +8,6 @@
+     "@finos/perspective-viewer-d3fc": "^1.6.2",
+     "@finos/perspective-viewer-datagrid": "^1.6.2",
+     "@types/jest": "^23.3.13",
+-    "@types/node": "^10.12.19",
+     "@types/react": "^16.9.0",
+     "@types/react-dom": "^16.0.11",
+     "bootstrap": "^4.2.1",
+@@ -33,6 +32,7 @@
+     "not op_mini all"
+   ],
+   "devDependencies": {
++    "@types/node": "^20.5.2",
+     "awesome-typescript-loader": "^5.2.1",
+     "source-map-loader": "^0.2.4",
+     "typescript": "^3.2.4"
+diff --git a/src/DataManipulator.ts b/src/DataManipulator.ts
+index 7f62295..fceced2 100644
+--- a/src/DataManipulator.ts
++++ b/src/DataManipulator.ts
+@@ -1,20 +1,40 @@
+ import { ServerRespond } from './DataStreamer';
+ 
+-export interface Row {
+-  stock: string,
+-  top_ask_price: number,
++export interface Row { // structure for object returned by generateRow function
++  price_abc: number,
++  price_def: number,
++  ratio: number,
+   timestamp: Date,
++  upper_bound: number,
++  lower_bound: number,
++  trigger_alert: number | undefined,
+ }
+ 
+-
+ export class DataManipulator {
+-  static generateRow(serverResponds: ServerRespond[]) {
+-    return serverResponds.map((el: any) => {
+-      return {
+-        stock: el.stock,
+-        top_ask_price: el.top_ask && el.top_ask.price || 0,
+-        timestamp: el.timestamp,
+-      };
+-    })
++  static generateRow(serverRespond: ServerRespond[]): Row  {
++    const priceABC = (serverRespond[0].top_ask.price + serverRespond[0].top_bid.price)/2;
++    const priceDEF = (serverRespond[1].top_ask.price + serverRespond[1].top_bid.price)/2;
++    const ratio = priceABC / priceDEF;   // price_abc and price_def ratios
++    const upperBound = 1 + 0.1; // upper bound of +10%
++    const lowerBound = 1 - 0.1; // lower bound of -10%
++    return {
++      price_abc: priceABC,
++      price_def: priceDEF,
++      ratio,
++      timestamp: serverRespond[0].timestamp > serverRespond[0].timestamp ?
++        serverRespond[0].timestamp : serverRespond[1].timestamp,
++      upper_bound: upperBound,
++      lower_bound: lowerBound,
++      trigger_alert: (ratio > upperBound || ratio < lowerBound) ? ratio : undefined,
++    };
+   }
+ }
++  //   return serverResponds.map((el: any) => {
++  //     return {
++  //       stock: el.stock,
++  //       top_ask_price: el.top_ask && el.top_ask.price || 0,
++  //       timestamp: el.timestamp,
++  //     };
++  //   })
++  // }
++
+diff --git a/src/Graph.tsx b/src/Graph.tsx
+index 277797d..fd4f914 100644
+--- a/src/Graph.tsx
++++ b/src/Graph.tsx
+@@ -1,5 +1,5 @@
+ import React, { Component } from 'react';
+-import { Table } from '@finos/perspective';
++import { Table, TableData } from '@finos/perspective';
+ import { ServerRespond } from './DataStreamer';
+ import { DataManipulator } from './DataManipulator';
+ import './Graph.css';
+@@ -23,10 +23,13 @@ class Graph extends Component<IProps, {}> {
+     const elem = document.getElementsByTagName('perspective-viewer')[0] as unknown as PerspectiveViewerElement;
+ 
+     const schema = {
+-      stock: 'string',
+-      top_ask_price: 'float',
+-      top_bid_price: 'float',
++      price_abc: 'float',
++      price_def: 'float',
++      ratio: 'float',
+       timestamp: 'date',
++      upper_bound: 'float',
++      lower_bound: 'float',
++      trigger_alert: 'float',
+     };
+ 
+     if (window.perspective && window.perspective.worker()) {
+@@ -36,23 +39,25 @@ class Graph extends Component<IProps, {}> {
+       // Load the `table` in the `<perspective-viewer>` DOM reference.
+       elem.load(this.table);
+       elem.setAttribute('view', 'y_line');
+-      elem.setAttribute('column-pivots', '["stock"]');
+-      elem.setAttribute('row-pivots', '["timestamp"]');
+-      elem.setAttribute('columns', '["top_ask_price"]');
+-      elem.setAttribute('aggregates', JSON.stringify({
+-        stock: 'distinctcount',
+-        top_ask_price: 'avg',
+-        top_bid_price: 'avg',
++      elem.setAttribute('row-pivots', '["timestamp"]'); // defines x-axis
++      elem.setAttribute('columns', '["ratio", "lower_bound", "upper_bound", "trigger_alert"]'); // values to track
++      elem.setAttribute('aggregates', JSON.stringify({ // for duplicated data into one data point
++        price_abc: 'avg',
++        price_def: 'avg',
++        ratio: 'avg',
+         timestamp: 'distinct count',
++        upper_bound: 'avg',
++        lower_bound: 'avg',
++        trigger_alert: 'avg',
+       }));
+     }
+   }
+ 
+-  componentDidUpdate() {
+-    if (this.table) {
+-      this.table.update(
++  componentDidUpdate() { // runs when the component updates (when table gets new data)
++    if (this.table) { 
++      this.table.update([
+         DataManipulator.generateRow(this.props.data),
+-      );
++      ] as unknown as TableData);
+     }
+   }
+ }
+-- 
+2.36.1.windows.1
+
